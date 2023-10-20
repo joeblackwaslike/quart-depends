@@ -1,0 +1,8 @@
+.env
+.venv/
+quart-depends.code-workspace
+*.egg-info/
+*.mypy_cache
+*.pytest_cache
+*.git
+__pycache__/

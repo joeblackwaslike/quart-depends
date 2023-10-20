@@ -1,0 +1,212 @@
+[project]
+name = "quart-depends"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.9"
+
+keywords = []
+authors = [{ name = "Joe Black", email = "me@joeblack.nyc" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "fast-depends",
+  "pydantic<=1.10.13",
+  "python-dotenv",
+  "quart",
+  "typing_extensions",
+]
+
+[project.optional-dependencies]
+development = [
+  "coverage[toml]>=6.5",
+  "ipython",
+  "pytest",
+  "pytest-env",
+  "pytest-asyncio",
+  "pytest-mock",
+  "pep8",
+  "mypy",
+  "black",
+  "ruff",
+  "pre-commit",
+]
+
+[project.urls]
+Documentation = "https://github.com/joeblackwaslike/quart-depends#readme"
+Issues = "https://github.com/joeblackwaslike/quart-depends/issues"
+Source = "https://github.com/joeblackwaslike/quart-depends"
+
+# [tool.hatch.version]
+# path = "src/quart_depends/__about__.py"
+
+# [tool.hatch.envs.default]
+# extra-dependencies = [
+#   "coverage[toml]>=6.5",
+#   "ipython",
+#   "pytest",
+#   "pytest-asyncio",
+#   "pytest-mock",
+# ]
+
+# [tool.hatch.envs.default.env-vars]
+# PYTHONHASHSEED = "0-=0"
+# QUART_APP = "src.quart_depends.app:app"
+
+# [tool.hatch.envs.default.scripts]
+# test = "pytest {args:tests}"
+# test-cov = "coverage run -m pytest {args:tests}"
+# cov-report = [
+#   "- coverage combine",
+#   "coverage report",
+# ]
+# cov = [
+#   "test-cov",
+#   "cov-report",
+# ]
+
+# [[tool.hatch.envs.all.matrix]]
+# python = ["3.8", "3.9", "3.10", "3.11"]
+
+# [tool.hatch.envs.lint]
+# detached = true
+# extra-dependencies = [
+#   "black>=23.1.0",
+#   "mypy>=1.0.0",
+#   "ruff>=0.0.243",
+# ]
+# [tool.hatch.envs.lint.scripts]
+# typing = "mypy --install-types --non-interactive {args:src/quart_depends tests}"
+# style = [
+#   "ruff {args:.}",
+#   "black --check --diff {args:.}",
+# ]
+# fmt = [
+#   "black {args:.}",
+#   "ruff --fix {args:.}",
+#   "style",
+# ]
+# all = [
+#   "style",
+#   "typing",
+# ]
+
+[tool.black]
+exclude = '''
+/(
+    \.git
+    \.venv
+  | \.mypy_cache
+)/
+'''
+line_length = 100
+safe = true
+
+
+[tool.ruff]
+target-version = "py39"
+src = ["src"]
+line-length = 100
+skip-string-normalization = true
+select = [
+  "A",
+  "ARG",
+  "B",
+  "C",
+  "D",   # pydocstyle
+  "DTZ",
+  "E",   # pycodestyle
+  "EM",
+  "F",   # pyflakes
+  "FBT",
+  "I",
+  "ICN",
+  "ISC",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "TID",
+  "UP",  # pyupgrade
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Ignore checks for possible passwords
+  "S105",
+  "S106",
+  "S107",
+  # Ignore complexity
+  "C901",
+  "PLR0911",
+  "PLR0912",
+  "PLR0913",
+  "PLR0915",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+unsafe-fixes = true
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.isort]
+profile = "black"
+src_paths = ["quart_depends", "tests"]
+force_single_line = true
+use_parentheses = true
+atomic = true
+lines_after_imports = 2
+line_length = 100
+order_by_type = false
+known-first-party = ["quart_depends"]
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.per-file-ignores]
+# Tests can use magic values, assertions, and relative imports
+"tests/**/*" = ["PLR2004", "S101", "TID252"]
+
+[tool.coverage.run]
+source_pkgs = ["quart_depends", "tests"]
+branch = true
+parallel = true
+omit = ["src/quart_depends/__about__.py"]
+
+[tool.coverage.paths]
+quart_depends = ["src/quart_depends", "*/quart-depends/src/quart_depends"]
+tests = ["tests", "*/quart-depends/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+norecursedirs = [".vscode", ".venv", "*.egg-info", ".git", ".pytest_cache"]
+addopts = "--showlocals -p no:cacheprovider --asyncio-mode=auto"
+env = ["PYTHONHASHSEED=0"]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
