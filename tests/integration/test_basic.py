@@ -1,4 +1,5 @@
-from fast_depends import Depends, inject
+from quart_depends import Depends
+from quart_depends import inject
 
 
 def dependency(a: int) -> int:

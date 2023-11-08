@@ -1,11 +1,11 @@
 import typing as t
 
-from fast_depends import Depends
 from quart import Quart, Request, request
 
-from quart_depends.extension import QuartDepends
+from quart_depends import Depends, QuartDepends
 
 app = Quart(__name__)
+app.config["QUART_DEPENDS_AUTO_WIRE"] = True
 depends = QuartDepends()
 
 
@@ -26,7 +26,7 @@ def endpoint(request: QuartRequest = None):
 depends.init_app(app)
 
 
-async def test_extension():
+async def test_provider():
     test_client = app.test_client()
 
     resp = await test_client.get(

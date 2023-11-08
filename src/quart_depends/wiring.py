@@ -9,7 +9,7 @@ from quart import Quart
 
 
 def _wrap_view_class(view_func: t.Callable, app: Quart, provider, wrapper) -> t.Callable:
-    cls: t.Type[quart.views.View] = t.cast(t.Any, view_func).view_class
+    cls: type[quart.views.View] = t.cast(t.Any, view_func).view_class
 
     while getattr(view_func, "__wrapped__", None):  # pylint: disable=while-used
         view_func = view_func.__wrapped__

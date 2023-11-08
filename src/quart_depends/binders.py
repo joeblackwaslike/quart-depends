@@ -1,7 +1,6 @@
 import typing as t
 
 import quart
-import typing_extensions as tx
 from fast_depends import Depends
 from fast_depends.library import CustomField
 from quart import Quart
@@ -103,11 +102,11 @@ class JsonBody(CustomField):
         return {**super().use(**kwargs), self.param_name: payload}
 
 
-Request = tx.Annotated[QuartRequest, Depends(get_quart_request)]
-App = tx.Annotated[Quart, Depends(get_quart_app)]
-Global = tx.Annotated[AppCtxGlobals, Depends(get_quart_g)]
-Websocket = tx.Annotated[QuartWebsocket, Depends(get_quart_websocket)]
-Session = tx.Annotated[QuartSession, Depends(get_quart_session)]
+Request = t.Annotated[QuartRequest, Depends(get_quart_request)]
+App = t.Annotated[Quart, Depends(get_quart_app)]
+Global = t.Annotated[AppCtxGlobals, Depends(get_quart_g)]
+Websocket = t.Annotated[QuartWebsocket, Depends(get_quart_websocket)]
+Session = t.Annotated[QuartSession, Depends(get_quart_session)]
 
 FromHeader = t.Annotated[T, HeaderParam()]
 FromQueryData = t.Annotated[T, QueryData()]

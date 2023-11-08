@@ -6,19 +6,17 @@ from pydantic import BaseModel
 from quart import Quart
 from quart import Request as QuartRequest
 
-from quart_depends.binders import (
-    App,
-    FromBody,
-    FromCookie,
-    FromHeader,
-    FromJson,
-    FromPath,
-    FromQueryData,
-    FromQueryField,
-    FromRawJson,
-    Global,
-    Request,
-)
+from quart_depends.binders import App
+from quart_depends.binders import FromBody
+from quart_depends.binders import FromCookie
+from quart_depends.binders import FromHeader
+from quart_depends.binders import FromJson
+from quart_depends.binders import FromPath
+from quart_depends.binders import FromQueryData
+from quart_depends.binders import FromQueryField
+from quart_depends.binders import FromRawJson
+from quart_depends.binders import Global
+from quart_depends.binders import Request
 from quart_depends.extension import QuartDepends
 
 
@@ -45,7 +43,9 @@ class TestCustomFields:
 
     @pytest.fixture
     def app(self):
-        return Quart(__name__)
+        app = Quart(__name__)
+        app.config["QUART_DEPENDS_AUTO_WIRE"] = True
+        return app
 
     @pytest.fixture
     def ext(self):

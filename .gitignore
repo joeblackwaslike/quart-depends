@@ -6,3 +6,4 @@ quart-depends.code-workspace
 *.pytest_cache
 *.git
 __pycache__/
+build/

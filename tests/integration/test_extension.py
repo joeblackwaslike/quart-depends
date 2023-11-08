@@ -1,11 +1,12 @@
 import typing as t
 
-from fast_depends import Depends
 from quart import Quart, Request, Response, request
 
+from quart_depends import Depends
 from quart_depends.extension import QuartDepends
 
 app = Quart(__name__)
+app.config["QUART_DEPENDS_AUTO_WIRE"] = True
 depends = QuartDepends()
 
 
@@ -29,13 +30,17 @@ def handle_before_request(request: QuartRequest = None):
 
 
 @app.teardown_request
-def handle_teardown_request(err: t.Optional[Exception] = None, request: QuartRequest = None):
+def handle_teardown_request(exc: t.Optional[Exception] = None, request: QuartRequest = None):
     print(f"teardown_request: {request}")
 
 
 @app.after_request
-def handle_after_request(response: Response, request: QuartRequest = None):
+def handle_after_request(
+    response: Response,
+    request: QuartRequest = None,
+):
     print(f"after_request: {request}")
+    # after_request handler has to return a response
     return response
 
 
@@ -50,7 +55,11 @@ depends.init_app(app)
 async def test_extension():
     test_client = app.test_client()
     resp = await test_client.get(
-        "/", headers={"accept": "application/json", "secret_api_key": "df23dg3d52wri9"}
+        "/",
+        headers={
+            "accept": "application/json",
+            "secret_api_key": "df23dg3d52wri9",
+        },
     )
     result = await resp.get_json()
 

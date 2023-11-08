@@ -1,6 +1,6 @@
 [project]
 name = "quart-depends"
-dynamic = ["version"]
+version = "1.0.1"
 description = ''
 readme = "README.md"
 requires-python = ">=3.9"
@@ -10,34 +10,33 @@ authors = [{ name = "Joe Black", email = "me@joeblack.nyc" }]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = [
-  "fast-depends",
-  "pydantic<=1.10.13",
-  "python-dotenv",
-  "quart",
-  "typing_extensions",
-]
+dependencies = ["fast-depends", "pydantic<=1.10.13", "quart"]
 
 [project.optional-dependencies]
 development = [
+  "aiosqlite",
+  "black",
+  "build",
   "coverage[toml]>=6.5",
+  "python-dotenv",
+  "Flask-SQLAlchemy~=3.0.3",
+  "isort",
   "ipython",
+  "mypy",
+  "pre-commit",
   "pytest",
   "pytest-env",
-  "pytest-asyncio",
+  "pytest-asyncio @ https://github.com/joeblackwaslike/pytest-asyncio/releases/download/v0.20.4.dev43/pytest_asyncio-0.20.4.dev43-py3-none-any.whl",
   "pytest-mock",
   "pep8",
-  "mypy",
-  "black",
+  "redis",
   "ruff",
-  "pre-commit",
+  "SQLAlchemy[asyncio]~=2.0.7",
 ]
 
 [project.urls]
@@ -45,59 +44,16 @@ Documentation = "https://github.com/joeblackwaslike/quart-depends#readme"
 Issues = "https://github.com/joeblackwaslike/quart-depends/issues"
 Source = "https://github.com/joeblackwaslike/quart-depends"
 
-# [tool.hatch.version]
-# path = "src/quart_depends/__about__.py"
-
-# [tool.hatch.envs.default]
-# extra-dependencies = [
-#   "coverage[toml]>=6.5",
-#   "ipython",
-#   "pytest",
-#   "pytest-asyncio",
-#   "pytest-mock",
-# ]
-
-# [tool.hatch.envs.default.env-vars]
-# PYTHONHASHSEED = "0-=0"
-# QUART_APP = "src.quart_depends.app:app"
-
-# [tool.hatch.envs.default.scripts]
-# test = "pytest {args:tests}"
-# test-cov = "coverage run -m pytest {args:tests}"
-# cov-report = [
-#   "- coverage combine",
-#   "coverage report",
-# ]
-# cov = [
-#   "test-cov",
-#   "cov-report",
-# ]
-
-# [[tool.hatch.envs.all.matrix]]
-# python = ["3.8", "3.9", "3.10", "3.11"]
-
-# [tool.hatch.envs.lint]
-# detached = true
-# extra-dependencies = [
-#   "black>=23.1.0",
-#   "mypy>=1.0.0",
-#   "ruff>=0.0.243",
-# ]
-# [tool.hatch.envs.lint.scripts]
-# typing = "mypy --install-types --non-interactive {args:src/quart_depends tests}"
-# style = [
-#   "ruff {args:.}",
-#   "black --check --diff {args:.}",
-# ]
-# fmt = [
-#   "black {args:.}",
-#   "ruff --fix {args:.}",
-#   "style",
-# ]
-# all = [
-#   "style",
-#   "typing",
-# ]
+[tool.isort]
+profile = "wemake"
+src_paths = ["src", "tests"]
+force_single_line = true
+use_parentheses = true
+atomic = true
+lines_after_imports = 2
+line_length = 100
+order_by_type = false
+known_first_party = ["src", "tests"]
 
 [tool.black]
 exclude = '''
@@ -112,10 +68,9 @@ safe = true
 
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py311"
 src = ["src"]
 line-length = 100
-skip-string-normalization = true
 select = [
   "A",
   "ARG",
@@ -147,6 +102,15 @@ select = [
 ignore = [
   # Allow non-abstract empty methods in abstract base classes
   "B027",
+  "B008",
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "D105",
+  "D106",
+  "D107",
   # Allow boolean positional values in function calls, like `dict.get(... True)`
   "FBT003",
   # Ignore checks for possible passwords
@@ -155,10 +119,13 @@ ignore = [
   "S107",
   # Ignore complexity
   "C901",
+  "C408",
+  "RUF012",
   "PLR0911",
   "PLR0912",
   "PLR0913",
   "PLR0915",
+  "UP007",
 ]
 unfixable = [
   # Don't touch unused imports
@@ -169,16 +136,15 @@ unsafe-fixes = true
 [tool.ruff.pydocstyle]
 convention = "google"
 
-[tool.ruff.isort]
-profile = "black"
-src_paths = ["quart_depends", "tests"]
-force_single_line = true
-use_parentheses = true
-atomic = true
-lines_after_imports = 2
-line_length = 100
-order_by_type = false
-known-first-party = ["quart_depends"]
+# [tool.ruff.isort]
+# # src_paths = ["src", "tests"]
+# force_single_line = true
+# use_parentheses = true
+# atomic = true
+# lines_after_imports = 2
+# line_length = 100
+# order_by_type = false
+# known-first-party = ["quart_depends"]
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"
@@ -188,7 +154,7 @@ ban-relative-imports = "all"
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
 [tool.coverage.run]
-source_pkgs = ["quart_depends", "tests"]
+source_pkgs = ["src", "tests"]
 branch = true
 parallel = true
 omit = ["src/quart_depends/__about__.py"]
@@ -204,7 +170,9 @@ exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 minversion = "7.0"
 testpaths = ["tests"]
 norecursedirs = [".vscode", ".venv", "*.egg-info", ".git", ".pytest_cache"]
-addopts = "--showlocals -p no:cacheprovider --asyncio-mode=auto"
+addopts = "--showlocals --loop-scope session"
+asyncio_mode = "auto"
+py311_task = true
 env = ["PYTHONHASHSEED=0"]
 
 [build-system]

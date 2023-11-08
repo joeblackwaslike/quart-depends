@@ -1,7 +1,6 @@
 import asyncio
-import typing as t
 
-from fast_depends import Depends, inject
+from quart_depends import Depends, inject
 
 
 def test_basic_scenario():

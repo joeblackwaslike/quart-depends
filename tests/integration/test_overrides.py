@@ -1,5 +1,7 @@
 import pytest
-from fast_depends import Depends, dependency_provider, inject
+from fast_depends import dependency_provider
+
+from quart_depends import Depends, inject
 
 
 def original_dependency():

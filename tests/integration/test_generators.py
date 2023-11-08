@@ -1,6 +1,8 @@
 import logging
 
-from fast_depends import Depends, inject
+from quart_depends import Depends
+from quart_depends import inject
+
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +50,9 @@ class TestGenerators:
 
         db = view()
 
-        assert db.committed == True
-        assert db.closed == True
-        assert db.rolled_back == False
+        assert db.committed is True
+        assert db.closed is True
+        assert db.rolled_back is False
 
     async def test_generator_dependency_async(self):
         async def dependency():
@@ -69,6 +71,6 @@ class TestGenerators:
 
         db = await view()
 
-        assert db.committed == True
-        assert db.closed == True
-        assert db.rolled_back == False
+        assert db.committed is True
+        assert db.closed is True
+        assert db.rolled_back is False
