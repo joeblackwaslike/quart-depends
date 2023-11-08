@@ -7,3 +7,4 @@ quart-depends.code-workspace
 *.git
 __pycache__/
 build/
+dist/

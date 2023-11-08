@@ -31,12 +31,13 @@ development = [
   "pre-commit",
   "pytest",
   "pytest-env",
-  "pytest-asyncio @ https://github.com/joeblackwaslike/pytest-asyncio/releases/download/v0.20.4.dev43/pytest_asyncio-0.20.4.dev43-py3-none-any.whl",
+  "pytest-asyncio",
   "pytest-mock",
   "pep8",
   "redis",
   "ruff",
   "SQLAlchemy[asyncio]~=2.0.7",
+  "twine",
 ]
 
 [project.urls]
