@@ -34,8 +34,7 @@ class QuartDepends:
         self.provider = Provider()
 
     def init_app(self, app: Quart):
-        auto_wire_app = app.config.get("QUART_DEPENDS_AUTO_WIRE", False)
-        if auto_wire_app:
+        if auto_wire_app := app.config.get("QUART_DEPENDS_AUTO_WIRE", False):
             logger.info("Auto wiring app with @inject")
             wire_app(app, self.provider)
         else:

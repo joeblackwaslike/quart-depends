@@ -92,8 +92,7 @@ def view(session: sa.orm.Session = Depends(get_session)):
         session.execute(sa.insert(user).values(name="test"))
         session.execute(sa.insert(user).values(name="test2"))
 
-    result = session.execute(sa.select(user).where(user.c.name == "test")).one()
-    return result
+    return session.execute(sa.select(user).where(user.c.name == "test")).one()
 
 
 @inject
@@ -102,8 +101,9 @@ async def async_view(session: sa.ext.asyncio.AsyncSession = Depends(get_async_se
         await session.execute(sa.insert(user).values(name="test"))
         await session.execute(sa.insert(user).values(name="test2"))
 
-    result = (await session.execute(sa.select(user).where(user.c.name == "test"))).one()
-    return result
+    return (
+        await session.execute(sa.select(user).where(user.c.name == "test"))
+    ).one()
 
 
 class TestDatabase:
