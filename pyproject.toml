@@ -3,7 +3,7 @@ name = "quart-depends"
 version = "1.0.1"
 description = ''
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 
 keywords = []
 authors = [{ name = "Joe Black", email = "me@joeblack.nyc" }]
@@ -15,7 +15,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: Implementation :: CPython",
 ]
-dependencies = ["fast-depends", "pydantic<=1.10.13", "quart"]
+dependencies = ["dishka", "pydantic", "quart"]
 
 [project.optional-dependencies]
 development = [
@@ -24,7 +24,7 @@ development = [
   "build",
   "coverage[toml]>=6.5",
   "python-dotenv",
-  "Flask-SQLAlchemy~=3.0.3",
+  "Flask-SQLAlchemy>=3",
   "isort",
   "ipython",
   "mypy",
@@ -36,7 +36,7 @@ development = [
   "pep8",
   "redis",
   "ruff",
-  "SQLAlchemy[asyncio]~=2.0.7",
+  "SQLAlchemy[asyncio]>=2",
   "twine",
 ]
 
